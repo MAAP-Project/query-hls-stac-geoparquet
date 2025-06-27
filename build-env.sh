@@ -2,8 +2,14 @@
 set -euo pipefail
 # This script is used to install any custom packages required by the algorithm.
 
+# install curl if not available
+command -v curl >/dev/null 2>&1 || { 
+    echo "Installing curl..."
+    conda install curl
+}
+
 # install uv
-conda install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
 source $HOME/.local/bin/env
 
 # Get current location of build script
