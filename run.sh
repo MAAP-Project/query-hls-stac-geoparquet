@@ -36,6 +36,6 @@ tile_idx=$2
 unset PROJ_LIB
 unset PROJ_DATA
 
-env | grep AWS
+cat /app/aws-config
 
 UV_PROJECT=${basedir} uv run ${basedir}/main.py --temporal ${temporal} --tile_idx ${tile_idx} --output_dir=${OUTPUT_DIR} 
