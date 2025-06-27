@@ -23,11 +23,9 @@ mkdir -p output
 INPUT_DIR=input
 OUTPUT_DIR=output
 
-# Since we only have one input we can list it as below
-input_filename=$(ls -d input/*)
-
 # Read the positional argument as defined in the algorithm registration here
-reduction_size=$1
+temporal=$1
+tile_idx=$2
 
 # Call the script using the absolute paths
 # Use the updated environment when calling 'conda run'
@@ -38,4 +36,4 @@ reduction_size=$1
 unset PROJ_LIB
 unset PROJ_DATA
 
-UV_PROJECT=${basedir} uv run ${basedir}/main.py --input_file ${input_filename} --output_dir=${OUTPUT_DIR} --outsize ${reduction_size} 
+UV_PROJECT=${basedir} uv run ${basedir}/main.py --temporal ${temporal} --tile_idx ${tile_idx} --output_dir=${OUTPUT_DIR} 
