@@ -4,6 +4,7 @@ from pathlib import Path
 
 import geopandas as gpd
 import rustac
+from rustac import DuckdbClient
 from shapely.geometry import mapping
 
 
@@ -19,12 +20,22 @@ async def run(temporal: str, tile_idx: int, output_file: str):
 
     # query HLS records for tile
     print("querying HLS archive")
-    await rustac.search_to(
-        outfile=output_file,
+    client = DuckdbClient(use_hive_partitioning=True)
+    client.execute(
+        """
+        CREATE OR REPLACE SECRET secret (
+            TYPE s3,
+            PROVIDER credential_chain,
+        );
+        """
+    )
+    results = client.search(
         href="s3://maap-ops-workspace/shared/henrydevseed/hls-stac-geoparquet/v1/**/*.parquet",
         datetime=temporal,
         intersects=mapping(tile_geom),
     )
+
+    await rustac.write(href=output_file, value=results)
 
 
 if __name__ == "__main__":
