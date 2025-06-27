@@ -31,15 +31,12 @@ async def run(temporal: str, tile_idx: int, output_file: str):
         """
         CREATE OR REPLACE SECRET secret (
              TYPE S3,
-             PROVIDER CREDENTIAL_CHAIN,
-             CHAIN 'instance',
-             REGION 'us-west-2', 
-             ENDPOINT 's3.us-west-2.amazonaws.com'
+             PROVIDER CREDENTIAL_CHAIN
         );
         """
     )
     results = client.search(
-        href="s3://maap-ops-workspace/shared/henrydevseed/hls-stac-geoparquet/v1/**/*.parquet",
+        href="s3://maap-ops-workspace/shared/henrydevseed/hls-stac-geoparquet-v1/year=*/month=*/*.parquet",
         datetime=temporal,
         intersects=mapping(tile_geom),
     )
