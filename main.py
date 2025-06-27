@@ -9,12 +9,16 @@ from shapely.geometry import mapping
 
 async def run(temporal: str, tile_idx: int, output_file: str):
     # read gpkg to get tile
+    print("reading tile geopackage")
     tile_gdf = gpd.read_file(
         "s3://maap-ops-workspace/shared/nathanmthomas/boreal_tiles_v003.gpkg"
     )
+
+    print(f"getting geometry for tile {tile_idx}")
     tile_geom = tile_gdf[tile_gdf["tile_num"] == tile_idx].to_crs(4326).geometry.iloc[0]
 
     # query HLS records for tile
+    print("querying HLS archive")
     await rustac.search_to(
         outfile=output_file,
         href="s3://maap-ops-workspace/shared/henrydevseed/hls-stac-geoparquet/v1/**/*.parquet",

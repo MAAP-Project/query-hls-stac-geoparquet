@@ -1,7 +1,7 @@
 [project]
-name = "dps-stac-test"
+name = "query-hls-stac-geoparquet"
 version = "0.1.0"
-description = "Add your description here"
+description = "Query HLS STAC geoparquet archive"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
