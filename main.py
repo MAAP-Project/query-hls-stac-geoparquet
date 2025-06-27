@@ -32,7 +32,7 @@ if __name__ == "__main__":
         description="Queries the HLS STAC geoparquet archive and writes the result to a file"
     )
     parse.add_argument("--temporal", help="temporal range for the query", required=True)
-    parse.add_argument("--tile_idx", help="boreal tile index", required=True)
+    parse.add_argument("--tile_idx", help="boreal tile index", required=True, type=int)
     parse.add_argument(
         "--output_dir", help="Directory in which to save output", required=True
     )
@@ -40,7 +40,9 @@ if __name__ == "__main__":
 
     output_dir = Path(args.output_dir)
     output_file = str(output_dir / "hls.parquet")
-
+    print(
+        f"running with temporal: {args.temporal}, output_file: {output_file}, tile_idx: {args.tile_idx}"
+    )
     asyncio.run(
         run(temporal=args.temporal, output_file=output_file, tile_idx=args.tile_idx)
     )
