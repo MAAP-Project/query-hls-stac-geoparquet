@@ -3,7 +3,6 @@ import asyncio
 import logging
 from pathlib import Path
 
-import boto3
 import geopandas as gpd
 import rustac
 from rustac import DuckdbClient
@@ -31,8 +30,11 @@ async def run(temporal: str, tile_idx: int, output_file: str):
     client.execute(
         """
         CREATE OR REPLACE SECRET secret (
-            TYPE s3,
-            PROVIDER credential_chain
+             TYPE S3,
+             PROVIDER CREDENTIAL_CHAIN,
+             CHAIN 'instance',
+             REGION 'us-west-2', 
+             ENDPOINT 's3.us-west-2.amazonaws.com'
         );
         """
     )
@@ -61,11 +63,6 @@ if __name__ == "__main__":
     logging.info(
         f"running with temporal: {args.temporal}, output_file: {output_file}, tile_idx: {args.tile_idx}"
     )
-
-    session = boto3.Session()
-    credentials = session.get_credentials()
-    print(credentials)
-
     asyncio.run(
         run(temporal=args.temporal, output_file=output_file, tile_idx=args.tile_idx)
     )
