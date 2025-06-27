@@ -25,7 +25,7 @@ async def run(temporal: str, tile_idx: int, output_file: str):
         """
         CREATE OR REPLACE SECRET secret (
             TYPE s3,
-            PROVIDER credential_chain,
+            PROVIDER credential_chain
         );
         """
     )
