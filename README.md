@@ -13,7 +13,7 @@ This DPS algorithm uses [`rustac`](https://github.com/stac-utils/rustac-py) to q
 Try this out if you want to query HLS STAC records in your DPS jobs.
 
 > [!WARNING]
-> This archive of HLS STAC records is experimental and only contains items through May 2025.
+> This archive of HLS STAC records is experimental and only contains items through October 2025.
 
 ## Details
 
@@ -38,10 +38,20 @@ client.execute(
 )
 
 # use rustac/duckdb to search through the partitioned parquet dataset to find matching items
-results = client.search(
-    href="s3://maap-ops-workspace/shared/henrydevseed/hls-stac-geoparquet-v1/year=*/month=*/*.parquet",
-    datetime="2025-05-01T00:00:00Z/2025-05-31T23:59:59Z",
-    bbox=(-90, 45, -85, 50),
+parquet_href = "s3://maap-ops-workspace/shared/henrydevseed/hls-stac-geoparquet/v0.2.0/{collection}/**/*.parquet"
+
+datetime = "2025-05-01T00:00:00Z/2025-05-31T23:59:59Z"
+bbox = (-90, 45, -85, 50)
+
+hls_l30_items = client.search(
+    href=parquet_href.format(collection="HLSL30_2.0"),
+    datetime=datetime,
+    bbox=bbox,
+)
+hls_s30_items = client.search(
+    href=parquet_href.format(collection="HLSS30_2.0"),
+    datetime=datetime,
+    bbox=bbox,
 )
 
 ```

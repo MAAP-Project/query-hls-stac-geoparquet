@@ -13,6 +13,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+HLS_STAC_GEOPARQUET_HREF = "s3://maap-ops-workspace/shared/henrydevseed/hls-stac-geoparquet/v0.2.0/{collection}/**/*.parquet"
+
 
 async def run(temporal: str, tile_idx: int, output_file: str):
     # read gpkg to get tile
@@ -36,7 +38,7 @@ async def run(temporal: str, tile_idx: int, output_file: str):
         """
     )
     results = client.search(
-        href="s3://maap-ops-workspace/shared/henrydevseed/hls-stac-geoparquet-v1/year=*/month=*/*.parquet",
+        href=HLS_STAC_GEOPARQUET_HREF.format(collection="HLSS30_2.0"),
         datetime=temporal,
         intersects=mapping(tile_geom),
     )
